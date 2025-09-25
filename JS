@@ -1,0 +1,213 @@
+import React, { useState } from 'react';
+import './NaniAIQuestionGenerator.css';
+
+const NaniAIQuestionGenerator = () => {
+    const [selections, setSelections] = useState({
+        schoolSystem: 'junior',
+        subject: 'chinese',
+        volume: 'vol1',
+        chapter: 'ch1',
+        section: '1-1'
+    });
+
+    const handleSelection = (category, value) => {
+        setSelections(prev => ({
+            ...prev,
+            [category]: value
+        }));
+    };
+
+    const handleGenerate = () => {
+        console.log('選中的選項:', selections);
+        
+        // 顯示選中結果
+        const resultText = Object.values(selections).join('\n');
+        alert('開始生成試題...\n\n選中的選項:\n' + resultText);
+        
+        // 這裡可以添加實際的API調用
+        // fetch('/api/generate-questions', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify(selections)
+        // })
+    };
+
+    const schoolSystemOptions = [
+        { value: 'elementary', text: '國小' },
+        { value: 'junior', text: '國中' },
+        { value: 'senior', text: '高中' }
+    ];
+
+    const subjectOptions = [
+        { value: 'chinese', text: '國語' },
+        { value: 'math', text: '數學' },
+        { value: 'science', text: '自然' },
+        { value: 'social', text: '社會' },
+        { value: 'life', text: '生活' }
+    ];
+
+    const volumeOptions = [
+        { value: 'vol1', text: '第一冊(七上)' },
+        { value: 'vol2', text: '第二冊(七下)' },
+        { value: 'vol3', text: '第三冊(八上)' },
+        { value: 'vol4', text: '第四冊(八下)' }
+    ];
+
+    const chapterOptions = [
+        { value: 'ch1', text: '第一章_夏夜' },
+        { value: 'ch2', text: '第二章_絕句選' },
+        { value: 'ch3', text: '第三章_紙船印象' },
+        { value: 'ch4', text: '第四章_老師的十二樣見面禮' },
+        { value: 'ch5', text: '第五章_吃冰的滋味' },
+        { value: 'ch6', text: '第六章_牛背上的呀喝' }
+    ];
+
+    const sectionOptions = [
+        { value: '1-1', text: '[1-1]形音義' },
+        { value: '1-2', text: '[1-2]成語詞語' }
+    ];
+
+    const OptionButton = ({ option, isSelected, onClick }) => (
+        <button
+            className={`option-btn ${isSelected ? 'selected' : ''}`}
+            onClick={onClick}
+        >
+            {option.text}
+        </button>
+    );
+
+    return (
+        <div className="nani-ai-app">
+            {/* Header */}
+            <header className="header">
+                <div className="header-content">
+                    <div className="logo">
+                        <h1>Nani AI無限出題</h1>
+                    </div>
+                    <div className="user-info">
+                        <div className="remaining-count">
+                            <i className="fas fa-database"></i>
+                            <span>剩餘次數: 50</span>
+                        </div>
+                        <div className="user-profile">
+                            <i className="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            {/* Banner */}
+            <section className="banner">
+                <div className="banner-content">
+                    <div className="banner-left">
+                        <h2 className="banner-title">南一AI無限出題</h2>
+                        <div className="feature-tags">
+                            <span className="tag">AI快速生成</span>
+                            <span className="tag">操作方便簡單</span>
+                            <span className="tag">專注教學核心</span>
+                        </div>
+                        <p className="banner-description">
+                            NANI Bot 的AI 無限出題功能,簡單好操作,教師只需設定需求範圍,AI即可快速生成符合需求的試題,讓出題過程輕鬆又高效!
+                        </p>
+                    </div>
+                    <div className="banner-graphics">
+                        <div className="robot-character">🤖</div>
+                        <div className="star-graphic"></div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Main Content */}
+            <main className="main-content">
+                <div className="content-card">
+                    {/* Step 1: 選擇學制 */}
+                    <div className="step">
+                        <label className="step-label">第一步:選擇學制</label>
+                        <div className="button-group">
+                            {schoolSystemOptions.map(option => (
+                                <OptionButton
+                                    key={option.value}
+                                    option={option}
+                                    isSelected={selections.schoolSystem === option.value}
+                                    onClick={() => handleSelection('schoolSystem', option.value)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Step 2: 選擇科目 */}
+                    <div className="step">
+                        <label className="step-label">第二步:選擇科目</label>
+                        <div className="button-group">
+                            {subjectOptions.map(option => (
+                                <OptionButton
+                                    key={option.value}
+                                    option={option}
+                                    isSelected={selections.subject === option.value}
+                                    onClick={() => handleSelection('subject', option.value)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Step 3: 選擇冊次 */}
+                    <div className="step">
+                        <label className="step-label">第三步:選擇冊次</label>
+                        <div className="button-group">
+                            {volumeOptions.map(option => (
+                                <OptionButton
+                                    key={option.value}
+                                    option={option}
+                                    isSelected={selections.volume === option.value}
+                                    onClick={() => handleSelection('volume', option.value)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Step 4: 選擇章節 */}
+                    <div className="step">
+                        <label className="step-label">第四步:選擇章節</label>
+                        <div className="button-group chapter-group">
+                            {chapterOptions.map(option => (
+                                <OptionButton
+                                    key={option.value}
+                                    option={option}
+                                    isSelected={selections.chapter === option.value}
+                                    onClick={() => handleSelection('chapter', option.value)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Step 5: 選擇小節 */}
+                    <div className="step">
+                        <label className="step-label">第五步:選擇章節對應的小節</label>
+                        <div className="button-group">
+                            {sectionOptions.map(option => (
+                                <OptionButton
+                                    key={option.value}
+                                    option={option}
+                                    isSelected={selections.section === option.value}
+                                    onClick={() => handleSelection('section', option.value)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Generate Button */}
+                    <button className="generate-btn" onClick={handleGenerate}>
+                        開始生成
+                    </button>
+                </div>
+            </main>
+
+            {/* Footer */}
+            <footer className="footer">
+                <p>© NANI BOOK ENTERPRISE CO., LTD. All Rights Reserved.</p>
+            </footer>
+        </div>
+    );
+};
+
+export default NaniAIQuestionGenerator;
