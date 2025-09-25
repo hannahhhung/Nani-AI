@@ -4,5 +4,450 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>南一AI無限出題</title>
-    ...
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #EAF9E8 0%, #f0f8f0 100%);
+            min-height: 100vh;
+            color: #212B36;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #EAF9E8 0%, #f0f8f0 100%);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            color: #007141;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #007141;
+        }
+
+        .remaining-count {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .user-profile {
+            width: 40px;
+            height: 40px;
+            background: #007141;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Banner */
+        .banner {
+            padding: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .banner-left {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .banner-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .feature-tags {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: white;
+            color: #2563eb;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner-description {
+            font-size: 16px;
+            color: #4a5568;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .banner-graphics {
+            position: relative;
+            flex: 1;
+            height: 300px;
+        }
+
+        .robot-character {
+            position: absolute;
+            right: 50px;
+            top: 20px;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f8f0 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            z-index: 3;
+        }
+
+        .star-graphic {
+            position: absolute;
+            right: 20px;
+            top: 80px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #00A15D, #007141);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.6; }
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .step {
+            margin-bottom: 30px;
+        }
+
+        .step-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .chapter-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #00A15D;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .option-btn:hover {
+            background: #007141;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 161, 93, 0.3);
+        }
+
+        .option-btn.selected {
+            background: #007141;
+            box-shadow: 0 4px 12px rgba(0, 113, 65, 0.3);
+        }
+
+        .generate-btn {
+            width: 100%;
+            background: #E3CE00;
+            color: #212B36;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            background: #facc15;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(227, 206, 0, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: #f7fafc;
+            padding: 20px;
+            text-align: center;
+            color: #919EAB;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .banner-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .banner-title {
+                font-size: 36px;
+            }
+            
+            .banner-graphics {
+                height: 200px;
+                margin-top: 30px;
+            }
+            
+            .robot-character {
+                right: 20px;
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+            }
+            
+            .content-card {
+                padding: 20px;
+                margin: 0 10px;
+            }
+            
+            .button-group {
+                justify-content: center;
+            }
+            
+            .chapter-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>Nani AI無限出題</h1>
+            </div>
+            <div class="user-info">
+                <div class="remaining-count">
+                    <i class="fas fa-database"></i>
+                    <span>剩餘次數: 50</span>
+                </div>
+                <div class="user-profile">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner -->
+    <section class="banner">
+        <div class="banner-content">
+            <div class="banner-left">
+                <h2 class="banner-title">南一AI無限出題</h2>
+                <div class="feature-tags">
+                    <span class="tag">AI快速生成</span>
+                    <span class="tag">操作方便簡單</span>
+                    <span class="tag">專注教學核心</span>
+                </div>
+                <p class="banner-description">
+                    NANI Bot 的AI 無限出題功能,簡單好操作,教師只需設定需求範圍,AI即可快速生成符合需求的試題,讓出題過程輕鬆又高效!
+                </p>
+            </div>
+            <div class="banner-graphics">
+                <div class="robot-character">🤖</div>
+                <div class="star-graphic"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-card">
+            <!-- Step 1: 選擇學制 -->
+            <div class="step">
+                <label class="step-label">第一步:選擇學制</label>
+                <div class="button-group">
+                    <button class="option-btn" data-value="elementary">國小</button>
+                    <button class="option-btn selected" data-value="junior">國中</button>
+                    <button class="option-btn" data-value="senior">高中</button>
+                </div>
+            </div>
+
+            <!-- Step 2: 選擇科目 -->
+            <div class="step">
+                <label class="step-label">第二步:選擇科目</label>
+                <div class="button-group">
+                    <button class="option-btn selected" data-value="chinese">國語</button>
+                    <button class="option-btn" data-value="math">數學</button>
+                    <button class="option-btn" data-value="science">自然</button>
+                    <button class="option-btn" data-value="social">社會</button>
+                    <button class="option-btn" data-value="life">生活</button>
+                </div>
+            </div>
+
+            <!-- Step 3: 選擇冊次 -->
+            <div class="step">
+                <label class="step-label">第三步:選擇冊次</label>
+                <div class="button-group">
+                    <button class="option-btn selected" data-value="vol1">第一冊(七上)</button>
+                    <button class="option-btn" data-value="vol2">第二冊(七下)</button>
+                    <button class="option-btn" data-value="vol3">第三冊(八上)</button>
+                    <button class="option-btn" data-value="vol4">第四冊(八下)</button>
+                </div>
+            </div>
+
+            <!-- Step 4: 選擇章節 -->
+            <div class="step">
+                <label class="step-label">第四步:選擇章節</label>
+                <div class="button-group chapter-group">
+                    <button class="option-btn selected" data-value="ch1">第一章_夏夜</button>
+                    <button class="option-btn" data-value="ch2">第二章_絕句選</button>
+                    <button class="option-btn" data-value="ch3">第三章_紙船印象</button>
+                    <button class="option-btn" data-value="ch4">第四章_老師的十二樣見面禮</button>
+                    <button class="option-btn" data-value="ch5">第五章_吃冰的滋味</button>
+                    <button class="option-btn" data-value="ch6">第六章_牛背上的呀喝</button>
+                </div>
+            </div>
+
+            <!-- Step 5: 選擇小節 -->
+            <div class="step">
+                <label class="step-label">第五步:選擇章節對應的小節</label>
+                <div class="button-group">
+                    <button class="option-btn selected" data-value="1-1">[1-1]形音義</button>
+                    <button class="option-btn" data-value="1-2">[1-2]成語詞語</button>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <button class="generate-btn" onclick="handleGenerate()">開始生成</button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© NANI BOOK ENTERPRISE CO., LTD. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 處理選項按鈕點擊
+        document.addEventListener('DOMContentLoaded', function() {
+            const optionButtons = document.querySelectorAll('.option-btn');
+            
+            optionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除同組其他按鈕的選中狀態
+                    const group = this.closest('.button-group');
+                    const siblings = group.querySelectorAll('.option-btn');
+                    siblings.forEach(sibling => sibling.classList.remove('selected'));
+                    
+                    // 添加選中狀態到當前按鈕
+                    this.classList.add('selected');
+                });
+            });
+        });
+        
+        // 處理生成按鈕點擊
+        function handleGenerate() {
+            // 收集所有選中的選項
+            const selectedOptions = {};
+            const steps = document.querySelectorAll('.step');
+            
+            steps.forEach((step, index) => {
+                const selectedBtn = step.querySelector('.option-btn.selected');
+                if (selectedBtn) {
+                    selectedOptions[`step${index + 1}`] = {
+                        value: selectedBtn.dataset.value,
+                        text: selectedBtn.textContent
+                    };
+                }
+            });
+            
+            console.log('選中的選項:', selectedOptions);
+            
+            // 顯示選中結果
+            const resultText = Object.values(selectedOptions).map(opt => opt.text).join('\n');
+            alert('開始生成試題...\n\n選中的選項:\n' + resultText);
+            
+            // 這裡可以添加實際的API調用
+            // fetch('/api/generate-questions', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(selectedOptions)
+            // })
+        }
+    </script>
+</body>
 </html>
